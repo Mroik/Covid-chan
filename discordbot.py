@@ -2,6 +2,9 @@ import discord
 from http import client as http
 from bs4 import BeautifulSoup as bs4
 
+#Insert your bot's token here
+token=""
+
 def listCovid():
     conn=http.HTTPSConnection("www.worldometers.info")                 
     conn.request("GET","https://www.worldometers.info/coronavirus/")
@@ -51,9 +54,11 @@ async def on_message(message):
     print(message.author,message.content)
     
     if message.content.startswith("!covid top"):
-        await message.channel.send(listCovid())
+        async with channel.typing():
+            await message.channel.send(listCovid())
     
     if message.content.startswith("!covid stats "):
-        await message.channel.send(getCovidStats(message.content.split(" ")[2]))
+        async with channel.typing():
+            await message.channel.send(getCovidStats(message.content.split(" ")[2]))
 
-client.run("")
+client.run(token)
