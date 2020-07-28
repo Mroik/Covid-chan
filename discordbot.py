@@ -1,9 +1,20 @@
 import discord
 from http import client as http
 from bs4 import BeautifulSoup as bs4
+import mysql.connector
+import sys
 
 #Insert your bot's token here
 token=""
+#Be funny here
+game=""
+#Admin(user id as integer)
+admin=
+#MySQL data
+sql_user=""
+sql_pw=""
+sql_ip=""
+sql_db=""
 
 def listCovid():
     conn=http.HTTPSConnection("www.worldometers.info")                 
@@ -51,14 +62,48 @@ client=discord.Client()
 async def on_message(message):
     if message.author==client.user:
         return
-    print(message.author,message.content)
-    
+    print(message.author.id,message.author,message.content)
+    try:
+        cursor=conn.cursor()
+        user_data=[message.author.id,message.author.name]
+        message_data=[message.author.id,message.content]
+        cursor.execute(user_insert,user_data)
+        cursor.execute(message_insert,message_data)
+        for x in message.attachments:
+            attachment_data=[message.author.id,x.url]
+            cursor.execute(attachment_insert,attachment_data)
+        conn.commit()
+        cursor.close()
+    except Exception as err:
+        print(err)
+
     if message.content.startswith("!covid top"):
-        async with channel.typing():
-            await message.channel.send(listCovid())
+        async with message.channel.typing():
+            result=listCovid()
+        await message.channel.send(result)
     
     if message.content.startswith("!covid stats "):
-        async with channel.typing():
-            await message.channel.send(getCovidStats(message.content.split(" ")[2]))
+        async with message.channel.typing():
+            result=getCovidStats(message.content.split(" ")[2])
+        await message.channel.send(result)
+
+    if message.content.startswith("!shutdown"):
+        if message.author.id==admin:
+            await client.close()
+            sys.exit()
+
+@client.event
+async def on_connect():
+    act=discord.Game(game)
+    await client.change_presence(activity=act)
+
+try:
+    conn=mysql.connector.connect(user=sql_user,password=sql_pw,host=sql_ip,database=sql_db)
+    user_insert=("insert into users(id,name) values(%s,%s) on duplicate key update name=values(name)")
+    message_insert=("insert into messages(user_id,message,time) values(%s,%s,NOW())")
+    attachment_insert=("insert into attachments(user_id,attachment,time) values(%s,%s,NOW())")
+except Exception as err:
+    print(err)
+    sys.exit()
 
 client.run(token)
