@@ -83,13 +83,17 @@ async def on_message(message):
         await message.channel.send(result)
     
     if message.content.startswith("!covid stats "):
-        async with message.channel.typing():
-            result=getCovidStats(message.content.split(" ")[2])
+        try:
+            async with message.channel.typing():
+                result=getCovidStats(message.content.split(" ")[2])
+        except:
+            result="The country you searched was not found, for countries with spaces in the name you'll have to use \"-\" instead i.e. south-korea. For the United States of America you'll need to use \"us\" (I know it's weird dont ask me the site I get data from has weird formats). If you still can't find results the country might not be in the list at all"
         await message.channel.send(result)
 
     if message.content.startswith("!shutdown"):
         if message.author.id==admin:
             await client.close()
+            conn.close()
             sys.exit()
 
 @client.event
