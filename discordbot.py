@@ -60,10 +60,13 @@ client=discord.Client()
 
 @client.event
 async def on_message(message):
+    global conn
     if message.author==client.user:
         return
     print(message.author.id,message.author,message.content)
     try:
+        if conn.is_connected() is False:
+            conn=mysql.connector.connect(user=sql_user,password=sql_pw,host=sql_ip,database=sql_db)
         cursor=conn.cursor()
         user_data=[message.author.id,message.author.name]
         message_data=[message.author.id,message.content]
