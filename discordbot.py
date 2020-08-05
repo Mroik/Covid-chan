@@ -83,7 +83,7 @@ async def on_message(message):
         cursor.execute(user_insert,user_data)
         cursor.execute(message_insert,message_data)
         for x in message.attachments:
-            attachment_data=[message.author.id,x.url]
+            attachment_data=[message.author.id,x.url,message.channel.id]
             cursor.execute(attachment_insert,attachment_data)
         conn.commit()
         cursor.close()
@@ -114,7 +114,7 @@ try:
     channel_insert=("insert into channels(id,name,id_guild) values (%s,%s,%s) on duplicate key update name=values(name)")
     user_insert=("insert into users(id,name) values(%s,%s) on duplicate key update name=values(name)")
     message_insert=("insert into messages(user_id,message,time,id_channel) values(%s,%s,NOW(),%s)")
-    attachment_insert=("insert into attachments(user_id,attachment,time) values(%s,%s,NOW())")
+    attachment_insert=("insert into attachments(user_id,attachment,time,channel_id) values(%s,%s,NOW(),%s)")
 except Exception as err:
     print(err)
     sys.exit()
