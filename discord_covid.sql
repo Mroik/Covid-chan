@@ -34,6 +34,37 @@ CREATE TABLE `attachments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `channels`
+--
+
+DROP TABLE IF EXISTS `channels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `channels` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_guild` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_guild` (`id_guild`),
+  CONSTRAINT `channels_ibfk_1` FOREIGN KEY (`id_guild`) REFERENCES `guilds` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `guilds`
+--
+
+DROP TABLE IF EXISTS `guilds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `guilds` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `messages`
 --
 
@@ -45,9 +76,12 @@ CREATE TABLE `messages` (
   `user_id` bigint(20) NOT NULL,
   `message` varchar(2001) COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` datetime NOT NULL,
+  `id_channel` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  KEY `id_channel` (`id_channel`),
+  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`id_channel`) REFERENCES `channels` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -74,4 +108,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-28 21:39:44
+-- Dump completed on 2020-08-05 17:59:05
