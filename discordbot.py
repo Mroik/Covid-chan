@@ -40,7 +40,8 @@ async def on_message(message):
         cursor.execute(guild_insert,guild_data)
         cursor.execute(channel_insert,channel_data)
         cursor.execute(user_insert,user_data)
-        cursor.execute(message_insert,message_data)
+        if message.content.strip()!="":
+            cursor.execute(message_insert,message_data)
         for x in message.attachments:
             attachment_data=[message.author.id,x.url,message.channel.id]
             cursor.execute(attachment_insert,attachment_data)
