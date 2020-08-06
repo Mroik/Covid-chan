@@ -40,7 +40,27 @@ def listCovid():
 
 def getCovidStats(country):
     conn=http.HTTPSConnection("www.worldometers.info")
-    conn.request("GET","https://www.worldometers.info/coronavirus/country/"+country.lower())
+    conn.request("GET","https://www.worldometers.info/coronavirus/")
+    resp=conn.getresponse()
+    resp=resp.read()
+    conn.close()
+
+    result=""
+    x=0
+
+    urlSuffix="-"
+    tag_list=bs4(resp,features="html.parser").table.find_all("a")
+    for tag in tag_list:
+        try:
+            if tag.get("class")[0]=="mt_a":
+                if tag.string.lower()==country.lower():
+                    urlSuffix=tag.get("href")
+                    break
+        except:
+            pass
+
+    conn=http.HTTPSConnection("www.worldometers.info")
+    conn.request("GET","https://www.worldometers.info/coronavirus/"+urlSuffix)
     resp=conn.getresponse()
     resp=resp.read()
     conn.close()
@@ -98,7 +118,7 @@ async def on_message(message):
     if message.content.startswith("!covid stats "):
         try:
             async with message.channel.typing():
-                result=getCovidStats(message.content.split(" ")[2])
+                result=getCovidStats(message.content[13:])
         except:
             result="The country you searched was not found, for countries with spaces in the name you'll have to use \"-\" instead i.e. south-korea. For the United States of America you'll need to use \"us\" (I know it's weird dont ask me the site I get data from has weird formats). If you still can't find results the country might not be in the list at all"
         await message.channel.send(result)
