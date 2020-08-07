@@ -60,7 +60,7 @@ async def on_message(message):
             async with message.channel.typing():
                 result=getCovidStats(message.content[13:])
         except:
-            result="The country you searched was not found, for countries with spaces in the name you'll have to use \"-\" instead i.e. south-korea. For the United States of America you'll need to use \"us\" (I know it's weird dont ask me the site I get data from has weird formats). If you still can't find results the country might not be in the list at all"
+            result="The country you searched was not found on https://www.worldometers.info/coronavirus/\nIf the country you tried to query is actually there raise the issue on https://github.com/Mroik/Covid-chan"
         await message.channel.send(result)
 
 @client.event
