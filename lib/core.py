@@ -11,7 +11,7 @@ def listCovid():
     result=""
     x=0
 
-    tag_list=bs4(resp,features="html.parser").table.find_all("a")
+    tag_list=bs4(resp,features="lxml").table.find_all("a")
     for tag in tag_list:
         try:
             if tag.get("class")[0]=="mt_a":
@@ -33,7 +33,7 @@ def getCovidStats(country):
     found=False
     x=0
 
-    tag_list=bs4(resp,features="html.parser").table.find_all("a")
+    tag_list=bs4(resp,features="lxml").table.find_all("a")
     for tag in tag_list:
         try:
             if tag.get("class")[0]=="mt_a":
