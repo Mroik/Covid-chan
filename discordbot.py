@@ -55,13 +55,16 @@ async def on_message(message):
             result=listCovid()
         await message.channel.send(result)
     
-    if message.content.startswith("!covid stats "):
+    elif message.content.startswith("!covid stats "):
         try:
             async with message.channel.typing():
                 result=getCovidStats(message.content[13:])
         except:
             result="The country you searched was not found on https://www.worldometers.info/coronavirus/\nIf the country you tried to query is actually there raise the issue on https://github.com/Mroik/Covid-chan"
         await message.channel.send(result)
+		
+	elif message.content.startswith("!covid"):
+        await message.channel.send("!covid stats <country>\n!covid top")
 
 @client.event
 async def on_connect():
