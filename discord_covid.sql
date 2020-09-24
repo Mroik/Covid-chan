@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.5.5-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: discord_covid
 -- ------------------------------------------------------
--- Server version	10.4.13-MariaDB
+-- Server version	10.5.5-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -33,7 +33,7 @@ CREATE TABLE `attachments` (
   KEY `channel_id` (`channel_id`),
   CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `attachments_ibfk_2` FOREIGN KEY (`channel_id`) REFERENCES `channels` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1187 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ DROP TABLE IF EXISTS `channels`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `channels` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_guild` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_guild` (`id_guild`),
@@ -62,7 +62,7 @@ DROP TABLE IF EXISTS `guilds`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `guilds` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -85,7 +85,7 @@ CREATE TABLE `messages` (
   KEY `id_channel` (`id_channel`),
   CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`id_channel`) REFERENCES `channels` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51412 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,4 +111,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-05 21:19:01
+-- Dump completed on 2020-09-24 17:40:24
